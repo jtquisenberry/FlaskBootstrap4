@@ -3,7 +3,6 @@
   <head>
     <title>{% block title %}Flask App{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
       body {
         min-height: 100vh;
@@ -22,7 +21,7 @@
         z-index: 1;
         top: 0;
         left: 0;
-        // background-color: #f8f9fa;
+        background-color: #111;
         overflow-x: hidden;
         padding-top: 60px;
         transition: 0.5s;
@@ -52,14 +51,14 @@
       .openbtn {
         font-size: 20px;
         cursor: pointer;
-        // background-color: #c7c7c8;
-        color: black;
+        background-color: #111;
+        color: white;
         padding: 10px 15px;
         border: none;
       }
 
       .openbtn:hover {
-        background-color: #f8f9fa;
+        background-color: #444;
       }
 
       #main {
@@ -79,7 +78,7 @@
     </style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-custom">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -104,7 +103,7 @@
     <div class="container">
       {% block content %}{% endblock %}
     </div>
-    <div id="mySidebar" class="sidebar bg-custom">
+    <div id="mySidebar" class="sidebar">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
       <a href="/">Home</a>
       <a href="/address">Address</a>
@@ -112,11 +111,12 @@
       <a href="/about">About</a>
     </div>
     <div id="main">
-      <button class="openbtn bg-custom" id="openbtn" onclick="openNav()">☰ Open Settings</button>
+      <button class="openbtn" onclick="openNav()">☰ Open Sidebar</button>
+      cows
     </div>
     <footer class="bg-light text-center text-lg-start">
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © {{ year }} Jacob Quisenberry
+        © {{ year }} Your Company Name
       </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -126,15 +126,11 @@
       function openNav() {
         document.getElementById("mySidebar").style.width = "250px";
         document.getElementById("main").style.marginLeft = "250px";
-        document.getElementById("openbtn").innerText = "☰ Close Settings"
-        document.getElementById("openbtn").setAttribute("onclick", "closeNav()")
       }
 
       function closeNav() {
         document.getElementById("mySidebar").style.width = "0";
         document.getElementById("main").style.marginLeft= "0";
-        document.getElementById("openbtn").innerText="☰ Open Settings"
-        document.getElementById("openbtn").setAttribute("onclick", "openNav()")
       }
     </script>
   </body>

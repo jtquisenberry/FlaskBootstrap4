@@ -5,7 +5,8 @@ conn = sqlite3.connect('database.db')
 
 # Create a new table named Product
 conn.execute('''CREATE TABLE Product
-             (Name TEXT NOT NULL,
+             (ID INTEGER PRIMARY KEY AUTOINCREMENT,
+             Name TEXT NOT NULL,
              Color TEXT NOT NULL,
              Quantity INT NOT NULL);''')
 

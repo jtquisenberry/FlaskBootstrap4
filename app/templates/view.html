@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}View Product{% endblock %}
+
+{% block content %}
+    <h1>View Product</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text"><strong>Color:</strong> {{ product.color }}</p>
+            <p class="card-text"><strong>Quantity:</strong> {{ product.quantity }}</p>
+            <a href="/update/{{ product.id }}" class="btn btn-warning">Update</a>
+            <a href="/delete/{{ product.id }}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+{% endblock %}

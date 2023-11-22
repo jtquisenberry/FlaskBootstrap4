@@ -2,31 +2,62 @@
 
 {% block title %}Product Page{% endblock %}
 
+
+
 {% block content %}
-    <h1>Product Page</h1>
+    <h1>Product Page REST</h1>
     <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Color</th>
-                <th>Quantity</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in products %}
-            <tr>
-                <td>{{ product[1] }}</td>
-                <td>{{ product[2] }}</td>
-                <td>{{ product[3] }}</td>
-                <td>
-                    <a href="/view/{{ product[0] }}" class="btn btn-primary">View</a>
-                    <a href="/delete/{{ product[0] }}" class="btn btn-danger">Delete</a>
-                    <a href="/update/{{ product[0] }}" class="btn btn-warning">Update</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <a href="/add" class="btn btn-success">Add Product</a>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Color</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    {% set product_id = product[0]%}
+                    {% set product_name = product[1]%}
+                    {% set product_color = product[2]%}
+                    {% set product_quantity = product[3]%}
+                    <td>{{ product_id }}</td>
+                    <td>{{ product_name }}</td>
+                    <td>{{ product_color }}</td>
+                    <td>{{ product_quantity }}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="viewProduct({{ product_id }})">View</button>
+                        <button class="btn btn-danger" onclick="deleteProduct({{ product_id }})">Delete</button>
+                        <button class="btn btn-warning" onclick="updateProduct({{ product_id }})">Update</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Modal dialog for displaying product details -->
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/product.js') }}"></script>
+    {% endblock scripts %}
+
 {% endblock %}

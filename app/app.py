@@ -15,8 +15,17 @@ def product():
     cursor.execute("SELECT * FROM product")
     data = cursor.fetchall()
     conn.close()
-    return render_template('product.html', data=data, products=[(3, "a", "b", 4)])
+    return render_template('product.html', products=data)
 
+
+@app.route('/product0')
+def product0():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM product")
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('product0.html', data=data, products=[(3, "a", "b", 4)])
 
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])

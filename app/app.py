@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 import sqlite3
 from product import Product
 
@@ -16,6 +16,27 @@ def product():
     data = cursor.fetchall()
     conn.close()
     return render_template('product.html', products=data)
+
+@app.route('/api/product/<int:id>', methods=['GET', 'POST', 'DELETE'])
+def product2(id):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM product")
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('product.html', products=data)
+
+@app.route('/api/product')
+def get_products():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM product")
+    data = cursor.fetchall()
+    conn.close()
+    return jsonify(data)
+
+
+
 
 
 @app.route('/product0')

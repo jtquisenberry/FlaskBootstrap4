@@ -34,3 +34,24 @@ function updateProduct(id) {
     // Redirect to the update page
     window.location.href = '/update/' + id;
 }
+
+function refreshTable() {
+    $.getJSON('/api/product', function(data) {
+        var rows = '';
+        $.each(data, function(index, product) {
+            rows += '<tr>';
+            rows += '<td>' + product[1] + '</td>';
+            rows += '<td>' + product[2] + '</td>';
+            rows += '<td>' + product[3] + '</td>';
+            rows += '<td>';
+            rows += '<button class="btn btn-primary" onclick="viewProduct(' + product[0] + ')">View</button>';
+            rows += '<button class="btn btn-danger" onclick="deleteProduct(' + product[0] + ')">Delete</button>';
+            rows += '<button class="btn btn-warning" onclick="updateProduct(' + product[0] + ')">Update</button>';
+            rows += '</td>';
+            rows += '</tr>';
+        });
+        $('#product-table tbody').html(rows);
+    });
+}
+
+

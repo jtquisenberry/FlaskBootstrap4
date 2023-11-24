@@ -33,6 +33,8 @@ def get_products():
     cursor.execute("SELECT * FROM product")
     data = cursor.fetchall()
     conn.close()
+
+    data = [(99, 'Cows', 'White', 44)]
     return jsonify(data)
 
 

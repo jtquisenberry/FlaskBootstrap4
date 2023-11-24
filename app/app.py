@@ -122,9 +122,9 @@ def add():
 
 @app.route('/view/<int:id>', methods=['GET'])
 def view(id):
-    conn = sqlite3.connect('product.db')
+    conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Product WHERE id=?", (id,))
+    cursor.execute("SELECT * FROM product WHERE id=?", (id,))
     data = cursor.fetchone()
     conn.close()
     return render_template('view.html', product=data)

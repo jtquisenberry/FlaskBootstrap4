@@ -71,6 +71,10 @@ def product0():
     conn.close()
     return render_template('product0.html', data=data, products=[(3, "a", "b", 4)])
 
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
@@ -125,7 +129,10 @@ def view(id):
     conn.close()
     return render_template('view.html', product=data)
 
-
+@app.route('/api/chat', methods=['POST'])
+def chat_api():
+    message = request.json['message']
+    return jsonify({'result': 'result'})
 
 
 if __name__ == '__main__':

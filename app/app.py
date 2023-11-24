@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, jsonify
 import sqlite3
-from product import Product
+from model import Product
 
 app = Flask(__name__)
 
@@ -19,24 +19,45 @@ def product():
 
 @app.route('/api/product/<int:id>', methods=['GET', 'POST', 'DELETE'])
 def product2(id):
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM product")
-    data = cursor.fetchall()
-    conn.close()
-    return render_template('product.html', products=data)
+    if request.method == 'GET':
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM product WHERE id=?", (id,))
+        record = cursor.fetchone()
+        product = {'id':record[0], 'name':record[1], 'color':record[2], 'quantity':record[3]}
+        conn.close()
+        return jsonify(product)
+    if request.method == 'DELETE':
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        result = cursor.execute("DELETE FROM product WHERE id=?", (id,))
+        row_count = result.rowcount
+        conn.close()
+        return jsonify({'success': True})
 
-@app.route('/api/product')
+
+
+@app.route('/api/product', methods=['GET'])
 def get_products():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM product")
     data = cursor.fetchall()
     conn.close()
-
-    data = [(99, 'Cows', 'White', 44)]
     return jsonify(data)
 
+@app.route('/api/product', methods=['POST'])
+def add_product():
+    data = request.get_json()
+    name = data['name']
+    color = data['color']
+    quantity = data['quantity']
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO product (name, color, quantity) VALUES (?, ?, ?)", (name, color, quantity))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
 
 
 

@@ -30,7 +30,10 @@
                     <td>
                         <button class="btn btn-primary" onclick="viewProduct({{ product_id }})">View</button>
                         <button class="btn btn-danger" onclick="deleteProduct({{ product_id }})">Delete</button>
-                        <button class="btn btn-warning" onclick="updateProduct({{ product_id }})">Update</button>
+                        <button type="button" class="btn btn-warning update-button" data-toggle="modal" data-target="#updateModal" data-id="{{ product_id }}">Update Product</button>
+                        <!--
+                        <button class="btn btn-warning update-button" onclick="updateProduct({{ product_id }})">Update</button>
+                        -->
                     </td>
                 </tr>
                 {% endfor %}
@@ -78,7 +81,7 @@
 
 
         <!-- Modal dialog for displaying product details -->
-        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -106,7 +109,24 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div id="productDetails"></div>
+                        <form id="updateForm">
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" class="form-control" id="update_name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="color">Color:</label>
+                                <input type="text" class="form-control" id="update_color" name="color" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Quantity:</label>
+                                <input type="number" class="form-control" id="update_quantity" name="quantity" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="addProduct()">Save</button>
                     </div>
                 </div>
             </div>
@@ -117,6 +137,14 @@
 
     {% block scripts %}
     <script src="{{ url_for('static', filename='js/product.js') }}"></script>
+
+    <script type="text/javascript">
+        $(".update-button").click(function () {
+            var product_id = $(this).attr('data-id');
+            updateProductModal(product_id);
+        });
+    </script>
+
 
     <!--
     <script type="text/javascript">

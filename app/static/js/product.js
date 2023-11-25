@@ -30,10 +30,49 @@ function deleteProduct(id) {
     });
 }
 
-function updateProduct(id) {
+function updateProduct2(id) {
     // Redirect to the update page
     window.location.href = '/update/' + id;
 }
+
+
+function updateProduct(id) {
+    var name = $('#name').val();
+    var color = $('#color').val();
+    var quantity = $('#quantity').val();
+    $.ajax({
+        url: '/api/product/' + id,
+        type: 'POST',
+        success: function(response) {
+            // Reload the page
+            //location.reload();
+            console.log(response);
+            $('#update_name').val('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx');
+        },
+        error: function(xhr, status, error) {
+            // Display an error message
+            alert('Error: ' + error);
+        }
+    });
+}
+
+
+function updateProductModal(id) {
+    $.ajax({
+        url: '/api/product/' + id,
+        type: 'GET',
+        success: function(response) {
+            // Reload the page
+            // location.reload();
+            console.log(response);
+        },
+        error: function(xhr, status, error) {
+            // Display an error message
+            alert('Error: ' + error);
+        }
+    });
+}
+
 
 function refreshTable() {
     $.getJSON('/api/product', function(data) {
@@ -63,7 +102,7 @@ function viewProduct(id) {
             // Display the response in a modal dialog
             $('#modal-title').text(response.name);
             $('#modal-body').html('<p><strong>Color:</strong> ' + response.color + '</p><p><strong>Quantity:</strong> ' + response.quantity + '</p>');
-            $('#modal').modal('show');
+            $('#viewModal').modal('show');
         },
         error: function(xhr, status, error) {
             // Display an error message
@@ -87,10 +126,6 @@ function deleteProduct(id) {
     });
 }
 
-function updateProduct(id) {
-    // Redirect to the update page
-    window.location.href = '/update/' + id;
-}
 
 function addProduct() {
     var name = $('#name').val();

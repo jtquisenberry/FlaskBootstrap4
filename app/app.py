@@ -34,6 +34,18 @@ def product2(id):
         row_count = result.rowcount
         conn.close()
         return jsonify({'success': True})
+    if request.method == 'POST':
+        name = request.form['name']
+        color = request.form['color']
+        quantity = request.form['quantity']
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        result = cursor.execute('UPDATE Product SET name=?, color=?, quantity=? WHERE id=?', (name, color, quantity, id))
+        row_count = result.rowcount
+        conn.commit()
+        conn.close()
+        return redirect('/product')
+
 
 
 
@@ -133,6 +145,8 @@ def view(id):
 def chat_api():
     message = request.json['message']
     return jsonify({'result': 'result'})
+
+
 
 
 if __name__ == '__main__':

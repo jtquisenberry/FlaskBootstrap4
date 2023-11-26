@@ -1,8 +1,12 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, session, g
 import sqlite3
 from model import Product
 
 app = Flask(__name__)
+
+################################
+# Product synchronous functions
+################################
 
 @app.route('/')
 def home():
@@ -17,78 +21,14 @@ def product():
     conn.close()
     return render_template('product.html', products=data)
 
-@app.route('/api/product/<int:id>', methods=['GET', 'POST', 'DELETE'])
-def product2(id):
-    if request.method == 'GET':
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM product WHERE id=?", (id,))
-        record = cursor.fetchone()
-        product = {'id':record[0], 'name':record[1], 'color':record[2], 'quantity':record[3]}
-        conn.close()
-        return jsonify(product)
-    if request.method == 'DELETE':
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        result = cursor.execute("DELETE FROM product WHERE id=?", (id,))
-        row_count = result.rowcount
-        conn.commit()
-        conn.close()
-        return jsonify({'success': True})
-    if request.method == 'POST':
-        request_json = request.get_json()
-        name = request_json['name']
-        color = request_json['color']
-        quantity = request_json['quantity']
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        result = cursor.execute('UPDATE Product SET name=?, color=?, quantity=? WHERE id=?', (name, color, quantity, id))
-        row_count = result.rowcount
-        conn.commit()
-        conn.close()
-        return redirect('/product')
-
-
-
-
-@app.route('/api/product', methods=['GET'])
-def get_products():
+@app.route('/product_sync')
+def product_sync():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM product")
-    data = cursor.fetchall()
+    products = cursor.fetchall()
     conn.close()
-    return jsonify(data)
-
-@app.route('/api/product', methods=['POST'])
-def add_product():
-    data = request.get_json()
-    name = data['name']
-    color = data['color']
-    quantity = data['quantity']
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO product (name, color, quantity) VALUES (?, ?, ?)", (name, color, quantity))
-    conn.commit()
-    conn.close()
-    return jsonify({'success': True})
-
-
-
-
-@app.route('/product0')
-def product0():
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM product")
-    data = cursor.fetchall()
-    conn.close()
-    return render_template('product0.html', data=data, products=[(3, "a", "b", 4)])
-
-@app.route('/chat')
-def chat():
-    return render_template('chat.html')
-
+    return render_template('product_sync.html', products=products)
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
@@ -98,7 +38,7 @@ def update(id):
         quantity = request.form['quantity']
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
-        c.execute('UPDATE Product SET name=?, color=?, quantity=? WHERE id=?', (name, color, quantity, id))
+        c.execute('UPDATE product SET name=?, color=?, quantity=? WHERE id=?', (name, color, quantity, id))
         conn.commit()
         conn.close()
         return redirect('/product')
@@ -143,12 +83,82 @@ def view(id):
     conn.close()
     return render_template('view.html', product=data)
 
+
+################################
+# Product API
+################################
+
+@app.route('/api/product', methods=['GET'])
+def get_products():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM product")
+    data = cursor.fetchall()
+    conn.close()
+    return jsonify(data)
+
+@app.route('/api/product', methods=['POST'])
+def add_product():
+    data = request.get_json()
+    name = data['name']
+    color = data['color']
+    quantity = data['quantity']
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO product (name, color, quantity) VALUES (?, ?, ?)", (name, color, quantity))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
+
+@app.route('/api/product/<int:id>', methods=['GET', 'POST', 'DELETE'])
+def product2(id):
+    if request.method == 'GET':
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM product WHERE id=?", (id,))
+        record = cursor.fetchone()
+        product = {'id':record[0], 'name':record[1], 'color':record[2], 'quantity':record[3]}
+        conn.close()
+        return jsonify(product)
+    if request.method == 'DELETE':
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        result = cursor.execute("DELETE FROM product WHERE id=?", (id,))
+        row_count = result.rowcount
+        conn.commit()
+        conn.close()
+        return jsonify({'success': True})
+    if request.method == 'POST':
+        request_json = request.get_json()
+        name = request_json['name']
+        color = request_json['color']
+        quantity = request_json['quantity']
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        result = cursor.execute('UPDATE Product SET name=?, color=?, quantity=? WHERE id=?', (name, color, quantity, id))
+        row_count = result.rowcount
+        conn.commit()
+        conn.close()
+        return redirect('/product')
+
+
+################################
+# Chat Synchronous Functions
+################################
+
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
+
+################################
+# Chat API
+################################
+
 @app.route('/api/chat', methods=['POST'])
 def chat_api():
     message = request.json['message']
     return jsonify({'result': 'result'})
-
-
 
 
 if __name__ == '__main__':

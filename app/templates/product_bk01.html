@@ -42,6 +42,8 @@
 
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal">Add Product</button>
 
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal" data-id="1">Update Product</button>
+
         <!-- Modal dialog for adding a new product -->
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -77,6 +79,7 @@
         </div>
 
 
+
         <!-- Modal dialog for displaying product details -->
         <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -96,8 +99,6 @@
             </div>
         </div>
 
-
-        <!-- Modal dialog for updating a product -->
         <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -132,6 +133,8 @@
         </div>
 
 
+
+
     {% block scripts %}
     <script src="{{ url_for('static', filename='js/product.js') }}"></script>
 
@@ -142,6 +145,23 @@
         });
     </script>
 
+
+    <!--
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#updateModal').on('show.bs.modal', function(e) {
+                var productId = $(e.relatedTarget).data('id');
+                $.ajax({
+                    url: '/get_product/' + productId,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#productDetails').html(response);
+                    }
+                });
+            });
+        });
+    </script>
+    -->
 
     {% endblock scripts %}
     <a href="#" class="btn btn-success" onclick="refreshTable()">Refresh Async</a>

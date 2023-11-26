@@ -32,6 +32,7 @@ def product2(id):
         cursor = conn.cursor()
         result = cursor.execute("DELETE FROM product WHERE id=?", (id,))
         row_count = result.rowcount
+        conn.commit()
         conn.close()
         return jsonify({'success': True})
     if request.method == 'POST':

@@ -90,8 +90,8 @@ function refreshTable() {
             rows += '<td>' + product[2] + '</td>';
             rows += '<td>' + product[3] + '</td>';
             rows += '<td>';
-            rows += '<button class="btn btn-primary" onclick="viewProduct(' + product[0] + ')">View</button>';
-            rows += '<button class="btn btn-danger" onclick="deleteProduct(' + product[0] + ')">Delete</button>';
+            rows += '<button class="btn btn-primary" onclick="viewProduct(' + product[0] + ')">View</button> ';
+            rows += '<button class="btn btn-danger" onclick="deleteProduct(' + product[0] + ')">Delete</button> ';
             rows += '<button class="btn btn-warning" onclick="updateProduct(' + product[0] + ')">Update</button>';
             rows += '</td>';
             rows += '</tr>';

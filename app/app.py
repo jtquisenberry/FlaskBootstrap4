@@ -35,9 +35,10 @@ def product2(id):
         conn.close()
         return jsonify({'success': True})
     if request.method == 'POST':
-        name = request.form['name']
-        color = request.form['color']
-        quantity = request.form['quantity']
+        request_json = request.get_json()
+        name = request_json['name']
+        color = request_json['color']
+        quantity = request_json['quantity']
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
         result = cursor.execute('UPDATE Product SET name=?, color=?, quantity=? WHERE id=?', (name, color, quantity, id))

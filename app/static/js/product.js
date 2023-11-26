@@ -37,17 +37,22 @@ function updateProduct2(id) {
 
 
 function updateProduct(id) {
-    var name = $('#name').val();
-    var color = $('#color').val();
-    var quantity = $('#quantity').val();
+    var name = $('#update_name').val();
+    var color = $('#update_color').val();
+    var quantity = $('#update_quantity').val();
     $.ajax({
         url: '/api/product/' + id,
         type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            name: name,
+            color: color,
+            quantity: quantity
+        }),
         success: function(response) {
             // Reload the page
-            //location.reload();
             console.log(response);
-            $('#update_name').val('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx');
+            location.reload();
         },
         error: function(xhr, status, error) {
             // Display an error message
@@ -62,9 +67,10 @@ function updateProductModal(id) {
         url: '/api/product/' + id,
         type: 'GET',
         success: function(response) {
-            // Reload the page
-            // location.reload();
-            console.log(response);
+            $('#update_name').val(response.name);
+            $('#update_color').val(response.color);
+            $('#update_quantity').val(response.quantity);
+            $('#update_save').attr('onclick', 'updateProduct(' + id + ')')
         },
         error: function(xhr, status, error) {
             // Display an error message

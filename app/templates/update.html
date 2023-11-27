@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Update Product</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block content %}
+    <h1>Update Product</h1>
     <form method="POST" action="/update/{{ product[0] }}">
         <div class="form-group">
             <label for="name">Name:</label>
@@ -19,5 +19,4 @@
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
-</body>
-</html>
+{% endblock %}

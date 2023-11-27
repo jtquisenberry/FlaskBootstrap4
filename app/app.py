@@ -146,9 +146,23 @@ def product2(id):
 # Chat Synchronous Functions
 ################################
 
-@app.route('/chat')
-def chat():
-    return render_template('chat.html')
+@app.route('/chat_sync', methods=['GET'])
+def chat_sync():
+    args = request.args
+    prompt = args.get('prompt', '')
+    response = f"{prompt}: my_response"
+    return render_template('chat_sync.html', response=response)
+
+@app.route('/chat_rest', methods=['GET', 'POST'])
+def chat_rest():
+    if request.method == 'GET':
+        args = request.args
+        prompt = args.get('prompt', '')
+        response = f"{prompt}: my_response"
+        return render_template('chat_rest.html', response=response)
+    elif request.method == 'POST':
+        a = 1
+        pass
 
 
 ################################
@@ -157,8 +171,9 @@ def chat():
 
 @app.route('/api/chat', methods=['POST'])
 def chat_api():
-    message = request.json['message']
-    return jsonify({'result': 'result'})
+    data = request.json
+    prompt = data.get('message', '')
+    return jsonify({'result': f"{prompt}: my_result"})
 
 
 if __name__ == '__main__':

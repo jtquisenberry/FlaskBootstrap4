@@ -7,11 +7,12 @@
         <h1>Chat</h1>
         <form id="chat-form">
           <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" class="form-control form-control-lg"></textarea>
+            <label for="response">Message</label>
+            <textarea id="response" name="response" class="form-control form-control-lg">{{response}}</textarea>
+            <label for="prompt">Message</label>
+            <textarea id="prompt" name="prompt" class="form-control form-control-lg"></textarea>
           </div>
           <button id="submit" type="submit" class="btn btn-primary">Submit</button>
-          <button id="clear" type="button" class="btn btn-secondary">Clear</button>
         </form>
         <div id="result"></div>
       </div>
@@ -19,6 +20,3 @@
   </div>
 {% endblock %}
 
-{% block scripts %}
-  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
-{% endblock %}

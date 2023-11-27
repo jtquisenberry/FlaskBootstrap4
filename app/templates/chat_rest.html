@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Chat</h1>
+        <form id="chat-form">
+          <div class="form-group">
+            <label for="response">Response</label>
+            <textarea id="response" name="response" class="form-control form-control-lg"></textarea>
+            <label for="prompt">Prompt</label>
+            <textarea id="prompt" name="prompt" class="form-control form-control-lg"></textarea>
+          </div>
+          <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+          <button id="clear" type="button" class="btn btn-secondary">Clear</button>
+        </form>
+        <div id="result"></div>
+      </div>
+    </div>
+  </div>
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+  <script type="text/javascript">
+        $(".update-button").click(function () {
+            var product_id = $(this).attr('data-id');
+            updateProductModal(product_id);
+        });
+  </script>
+{% endblock scripts %}
+{% endblock %}
+
+

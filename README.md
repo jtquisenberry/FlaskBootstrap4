@@ -1,5 +1,11 @@
 # FlaskBootstrap4-02
 
+# Style
+
+* Top nav bar, collapses to hamburger menu when width drops to 992 pixels.
+* 
+
+
 # Load Page with Data Synchronously
 
 Template `product_sync.html` demonstrates passing data from Python to a page synchronously. It features CRUD operations that work by passing data into Python functions.

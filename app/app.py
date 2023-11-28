@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, jsonify, session, g
 import sqlite3
 from model import Product
+import persistence
 
 app = Flask(__name__)
+
 
 ################################
 # Product synchronous functions
@@ -177,4 +179,9 @@ def chat_api():
 
 
 if __name__ == '__main__':
+    app.app_context().push()
+    print(f"app: {app}, app ID: {id(app)}, app Type: {type(app)}")
+    demo_object = {"a": 1, "b": 2, "c": 3}
+    app.config['demo_object'] = demo_object
+    persistence.print_app()
     app.run(debug=True)

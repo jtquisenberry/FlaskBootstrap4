@@ -2,8 +2,20 @@
 
 # Style
 
-* Top nav bar, collapses to hamburger menu when width drops to 992 pixels.
-* 
+* Top navigation bar, collapses to hamburger menu when width drops to 992 pixels. This works because the nav bar uses class `.navbar-expand-lg`, which follows this rule:
+
+```
+@media (min-width: 992px)
+.navbar-expand-lg {
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+```
+
+* Left side bar, expands and collapses using a floating button. 
+* A sticky footer, which displays at the bottom of the page unless there is enough page content to push the footer lower.
 
 
 # Load Page with Data Synchronously
